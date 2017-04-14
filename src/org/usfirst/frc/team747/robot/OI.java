@@ -57,64 +57,12 @@ public class OI {
             //BUTTON_BOILER
             //    = new JoystickButton(JOYSTICK_DRIVER_RIGHT, DriverStation.Joystick.BUTTON_2.getValue());
 
-	public static final ShootButton BUTTON_FIRE = new ShootButton();
-	public static final IndexerReverseButton BUTTON_REVERSE_INDEXER = new IndexerReverseButton();
 
     static Preferences prefs;
     
     public OI() {
-        BUTTON_INTAKE_FORWARD.whileHeld(new IntakeCommand());
-        BUTTON_INTAKE_BACK.whileHeld(new IntakeCommand(false));
-        BUTTON_REVERSE_INDEXER.whileHeld(new IndexerReverseCommand());
-        BUTTON_REVERSE_SHOOTER.whileHeld(new ShooterReverseCommand());
-        BUTTON_FIRE.whileHeld(new ShootBallsCommand());
-        BUTTON_REV_SHOOTER.whileHeld(new ShooterRevCommand());
-        BUTTON_CLIMB_SLOW.whileHeld(new ClimberClimbUpSlowCommand());
-        BUTTON_CLIMB_FAST.whileHeld(new ClimberClimbUpFastCommand());
-//        BUTTON_SHOOTER_VOLTAGE.whileHeld(new ShooterShootVoltageCommand());
-//        BUTTON_INDEXER_FORWARD.whileHeld(new ShooterIndexerForwardCommand());
-//        if (OI.getClimbState()) {
-//        	BUTTON_CLIMB_SLOW.whileHeld(new ClimberClimbUpSlowCommand());
-//        	
-//        } else {
-//            BUTTON_CLIMB_FAST.whileHeld(new ClimberClimbUpFastCommand());
-//        }
-
-        
-        BUTTON_GEAR.toggleWhenPressed(new VisionDriveCommand(Robot.VISION_TRACKING_FRONT, "GEAR", 8));
-        BUTTON_SECOND_GEAR.toggleWhenPressed(new SimpleVisionDriveCommand(Robot.VISION_TRACKING_FRONT, "GEAR", 8));
-        //        BUTTON_BOILER.toggleWhenPressed(new VisionDriveCommand(Robot.VISION_TRACKING_REAR, "BOILER", 0));
-        BUTTON_DRIVE_DISTANCE.whenPressed(new DriveDistanceCommand((6.25 * Math.PI), 0.1));
+    	BUTTON_INTAKE_FORWARD.whenPressed(new PIDDriveRevolutions(5));
     }
     
-    public static boolean getClimbState(){
-        return CONTROLLER_OPERATOR.getRawButton(DriverStation.GamePad.BUTTON_Y.getValue()) && 
-                CONTROLLER_OPERATOR.getRawButton(DriverStation.GamePad.BUTTON_X.getValue());
-    }
-
-    public static double getLeftShooterSpeed() {
-        prefs = Preferences.getInstance();
-        return prefs.getDouble("Motor1", 1);
-    }
-
-    public static double getRightShooterSpeed() {
-        prefs = Preferences.getInstance();
-        return prefs.getDouble("Motor2", 1);
-    }
-
-    public static double getIndexerSpeed() {
-        prefs = Preferences.getInstance();
-        return prefs.getDouble("Indexer", .55);
-    }
-  
-	public static boolean getShootButton() {
-		return CONTROLLER_OPERATOR.getRawAxis(DriverStation.GamePad.TRIGGER_RIGHT.getValue())
-                >= 0.5;
-	}
-	
-	public static boolean getIndexerReverseButton() {
-		return CONTROLLER_OPERATOR.getRawAxis(DriverStation.GamePad.TRIGGER_LEFT.getValue())
-                >= 0.5;
-	}
     
 }

@@ -2,17 +2,12 @@
 package org.usfirst.frc.team747.robot;
 
 import org.usfirst.frc.team747.robot.subsystems.DriveSubsystem;
-import org.usfirst.frc.team747.robot.subsystems.IntakeSubsystem;
-import org.usfirst.frc.team747.robot.subsystems.ClimberSubsystem;
-import org.usfirst.frc.team747.robot.subsystems.ShooterSubsystem;
-import org.usfirst.frc.team747.robot.subsystems.IndexerSubsystem;
 import org.usfirst.frc.team747.robot.vision.AxisM1004Specs;
 import org.usfirst.frc.team747.robot.vision.AxisM1011Specs;
 import org.usfirst.frc.team747.robot.vision.BoilerTargetTemplate;
 import org.usfirst.frc.team747.robot.vision.GearTargetTemplate;
 import org.usfirst.frc.team747.robot.vision.TargetTemplate;
 import org.usfirst.frc.team747.robot.vision.VisionTracking;
-import org.usfirst.frc.team747.robot.Autonomous;
 
 import java.util.HashMap;
 
@@ -42,10 +37,6 @@ import edu.wpi.first.wpilibj.vision.VisionThread;
 public class Robot extends IterativeRobot {
 
     public static final DriveSubsystem DRIVE_TRAIN = new DriveSubsystem();
-    public static final IntakeSubsystem INTAKE = new IntakeSubsystem();
-    public static final ShooterSubsystem SHOOTER = new ShooterSubsystem();
-    public static final IndexerSubsystem INDEXER = new IndexerSubsystem();
-    public static final ClimberSubsystem CLIMBER = new ClimberSubsystem();
 	public static File logs, driveLog;
 	public static BufferedWriter bw, bwDrive;
 	public static FileWriter fw, fwDrive;
@@ -61,7 +52,6 @@ public class Robot extends IterativeRobot {
     public static double targetOffsetDistance;
     
     private Command      autonomousCommand;
-    private Autonomous   autonomous;
 
     private static final AHRS NAV_X = new AHRS (SPI.Port.kMXP);
     
@@ -132,24 +122,8 @@ public class Robot extends IterativeRobot {
 //        });
 //        visionThreadRear.start();
         
-    	try {
-    		logs = new File("/U/Logs/shooterLog" + Instant.now().toEpochMilli() + ".csv");
-    		if(!logs.exists()){
-    			logs.createNewFile();
-    		}
-			fw = new FileWriter(logs);
-			bw = new BufferedWriter(fw);
-		
-			Robot.bw.write("outLeft,spdLeft,voltOutLeft1,voltOutLeft2,busVoltLeft,outRight,spdRight,voltOutRight1,"
-								+ "voltOutRight2,busVoltRight,leftP,leftI,leftD,leftF,rightP,rightI,rightD,rightF"
-								+ "spdIndexer,indexerP,indexerI,indexerD,indexerF\n");
-  		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
         
         
-        this.autonomous = new Autonomous();
         
         
         resetNavXAngle();
@@ -188,36 +162,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
-	}
-
-
-	@Override
-	public void autonomousInit() {
-		
-        autonomous.startMode();
-    if (autonomousCommand != null){
-        autonomousCommand.start();
-    }
-	
-	}
-	/**
-	 * This function is called periodically during autonomous
-	 */
-	@Override
-	public void autonomousPeriodic() {
-		
-//		if (autonLoops == 10){
-//			System.out.println("Auton NavX Angle: " + Robot.getNavXAngle());
-//			autonLoops = 0;
-//		} else {
-//			++autonLoops;
-//		}
-		
-		Scheduler.getInstance().run();
-  //      System.out.println("ROTATING****************** : " + Robot.getNavXAngle());
-//
-    //    System.out.println("****** left encoder =" + Double.toString(Robot.DRIVE_TRAIN.getLeftEncoderPosition()) + 
-    //            "  right encoder get=" + Double.toString(Robot.DRIVE_TRAIN.getRightEncoderPosition()));
 	}
 
 	@Override
